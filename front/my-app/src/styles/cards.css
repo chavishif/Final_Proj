@@ -1,0 +1,92 @@
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  margin: auto;
+  text-align: center;
+  font-family: arial;
+  display: inline-block;
+  margin-right: 20px;
+  margin-bottom: 20px;
+
+}
+
+/* .card {
+    display: inline-block;
+    width: 300px;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid black;
+    text-align: center;
+  } */
+
+.price {
+  color: grey;
+  font-size: 22px;
+}
+
+.card button {
+  border: none;
+  outline: 0;
+  padding: 12px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 18px;
+}
+
+.card button:hover {
+  opacity: 0.7;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 10px;
+  margin-top: 15px;
+}
+
+.product button {
+  background-color:rgba(176, 159, 106, 0.919);
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+  padding: 7px;
+  color: #000000;
+  cursor: pointer;
+  outline: none;
+  font-family: Tahoma, Verdana, sans-serif;
+
+}
+
+.product button:hover {
+  background: #764abc linear-gradient( rgba(176, 159, 106, 0.919) , rgba(176, 159, 106, 0.919) );
+}
+
+.subcategories-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.subcategory-link {
+  background-color: #f0f0f0;
+  border-radius: 50%;
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  margin: 0 10px;
+  text-align: center;
+  line-height: 100px;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #333;
+  text-decoration: none;
+}
+
+.subcategory-link:hover {
+  background-color: #333;
+  color: #f0f0f0;
+}
