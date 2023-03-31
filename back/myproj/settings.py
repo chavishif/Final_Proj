@@ -12,8 +12,10 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 
 
+import os
 from pathlib import Path
 from datetime import timedelta
+from celery.schedules import crontab
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -173,20 +175,36 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/src/'
 MEDIA_URL = '/images/'
 
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',
+    #  os.path.join(BASE_DIR, 'src'),
+    os.path.join(BASE_DIR, 'myproj'),
    ]
 
 
 
+MEDIA_ROOT = os.path.abspath(os.path.join(BASE_DIR, '..', 'front', 'my-app', 'src', 'images'))
 
-MEDIA_ROOT = BASE_DIR / 'static/images'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+
+# Celery settings
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+
+
+CELERY_BEAT_SCHEDULE = {
+    'update_order_status': {
+        'task': 'myapp.tasks.update_order_status',
+        'schedule': crontab(hour=0, minute=0),  # Runs every day at midnight
+    },
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Card, Col, ListGroup, Row } from 'react-bootstrap';
 import { Form, Link } from 'react-router-dom';
-import { useAppDispatch } from '../../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import ShippingType from '../../../models/shipping';
 import { createorderAsync } from '../../../services/shippingSlice';
 import "../../../styles/details.css"
 import { useNavigate } from 'react-router-dom';
 import { ThunkDispatch } from 'redux-thunk';
 import { AnyAction } from 'redux';
+import { getmyshippinginfoAsync, selectMYShippingInfo } from '../../Profile/profileSlice';
 
 interface ShippingAddressFormProps {
     initialValues: {
@@ -25,6 +26,10 @@ const Shipping = () => {
     const [postalCode, setPostalCode] = useState("");
     const [country, setCountry] = useState("");
     const [phone, setPhone] = useState("");
+    const [username, setUsername] = useState(localStorage.getItem("username"));
+    const MyAddress = useAppSelector(selectMYShippingInfo);
+    const access = useState(localStorage.getItem("access") || "");
+
 
     const cart = localStorage.getItem("cart"); // Get the value of the "cart" key from localStorage
     const cartObject = JSON.parse(cart || ""); // Convert the JSON string to a JavaScript object
@@ -57,7 +62,8 @@ const Shipping = () => {
                         cartItems,
                         taxPrice,
                         shippingPrice,
-                        totalPrice: totalOrder,
+                        totalPrice: totalOrder
+
                     })
                 );
                 navigate('/paypal');
@@ -73,7 +79,12 @@ const Shipping = () => {
         e.preventDefault();
     }
 
+    useEffect(() => {
 
+        dispatch(getmyshippinginfoAsync(access[0]))
+        console.log(MyAddress);
+
+    }, [])
 
 
     return (
@@ -159,77 +170,142 @@ const Shipping = () => {
 
                 <Col md={4} >
                     <form onSubmit={handleSubmit} style={{ backgroundColor: "white" }}>
-                        <div >
-                            <h2>Shipping Details</h2>
-                            <label style={{ fontSize: "22px" }} htmlFor="address">Address</label>
-                            <br></br>
-                            <input
-                                required
-                                placeholder='Street Number, Floor'
-                                type="text"
-                                id="address"
-                                value={address}
-                                onChange={(event) => setAddress(event.target.value)}
-                            />
-                        </div>
-                        <div>
-                            <label style={{ fontSize: "22px" }} htmlFor="city">City</label>
-                            <br></br>
-                            <input
-                                placeholder='City'
-                                type="text"
-                                id="city"
-                                value={city}
-                                onChange={(event) => setCity(event.target.value)}
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="postalCode" style={{ fontSize: "22px" }}>Postal Code</label>
-                            <br></br>
-                            <input
-                                placeholder='Postal Code'
-                                type="text"
-                                id="postalCode"
-                                value={postalCode}
-                                onChange={(event) => setPostalCode(event.target.value)}
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="country" style={{ fontSize: "22px" }}>Country</label>
-                            <br></br>
-                            <input
-                                placeholder='Country'
-                                type="text"
-                                id="country"
-                                value={country}
-                                onChange={(event) => setCountry(event.target.value)}
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="phone" style={{ fontSize: "22px" }}>Phone number</label>
-                            <br></br>
-                            <input
-                                placeholder='Phone number'
-                                type="number"
-                                id="phone"
-                                value={phone}
-                                onChange={(event) => setPhone(event.target.value)}
-                                required
-                            />
-                        </div>
-                        <br></br>
-                        <button className="button-33" role="button" onClick={handleorder(dispatch, navigate)} >continue to payment</button>
 
+
+
+                        <div>
+                            <h2>Shipping Details</h2>
+                            Name : {username}
+
+                            {MyAddress && MyAddress ?
+                                <>
+                                    <div className="form-group">
+                                        <label style={{ fontSize: "22px" }} htmlFor="address">Address</label>
+                                        <input
+                                            required
+                                            placeholder='Street Number, Floor'
+                                            type="text"
+                                            id="address"
+                                            value={MyAddress.address}
+                                            onChange={(event) => setAddress(event.target.value)}
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label style={{ fontSize: "22px" }} htmlFor="city">City</label>
+                                        <input
+                                            required
+                                            placeholder='City'
+                                            type="text"
+                                            id="city"
+                                            value={MyAddress.city}
+                                            onChange={(event) => setCity(event.target.value)}
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label style={{ fontSize: "22px" }} htmlFor="postalCode">Postal Code</label>
+                                        <input
+                                            required
+                                            placeholder='Postal Code'
+                                            type="text"
+                                            id="postalCode"
+                                            value={MyAddress.postalCode}
+                                            onChange={(event) => setPostalCode(event.target.value)}
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label style={{ fontSize: "22px" }} htmlFor="country">Country</label>
+                                        <input
+                                            required
+                                            placeholder='Country'
+                                            type="text"
+                                            id="country"
+                                            value={MyAddress.country}
+                                            onChange={(event) => setCountry(event.target.value)}
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label style={{ fontSize: "22px" }} htmlFor="phone">Phone number</label>
+                                        <input
+                                            required
+                                            placeholder='Phone number'
+                                            type="number"
+                                            id="phone"
+                                            value={MyAddress.phone}
+                                            onChange={(event) => setPhone(event.target.value)}
+                                        />
+                                    </div>
+                                </>
+                                :
+                                <>
+                                    <div className="form-group">
+                                        <label style={{ fontSize: "22px" }} htmlFor="address">Address</label>
+                                        <input
+                                            required
+                                            placeholder='Street Number, Floor'
+                                            type="text"
+                                            id="address"
+                                            value={address}
+                                            onChange={(event) => setAddress(event.target.value)}
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label style={{ fontSize: "22px" }} htmlFor="city">City</label>
+                                        <input
+                                            required
+                                            placeholder='City'
+                                            type="text"
+                                            id="city"
+                                            value={city}
+                                            onChange={(event) => setCity(event.target.value)}
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label style={{ fontSize: "22px" }} htmlFor="postalCode">Postal Code</label>
+                                        <input
+                                            required
+                                            placeholder='Postal Code'
+                                            type="text"
+                                            id="postalCode"
+                                            value={postalCode}
+                                            onChange={(event) => setPostalCode(event.target.value)}
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label style={{ fontSize: "22px" }} htmlFor="country">Country</label>
+                                        <input
+                                            required
+                                            placeholder='Country'
+                                            type="text"
+                                            id="country"
+                                            value={country}
+                                            onChange={(event) => setCountry(event.target.value)}
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label style={{ fontSize: "22px" }} htmlFor="phone">Phone</label>
+                                        <input
+                                            required
+                                            placeholder='phone'
+                                            type="text"
+                                            id="phone"
+                                            value={phone}
+                                            onChange={(event) => setPhone(event.target.value)}
+                                        />
+                                    </div>
+                                </>
+                            }
+                            <br></br>
+                            <button className="button-33" role="button" onClick={handleorder(dispatch, navigate)}>continue to payment</button>
+
+                        </div>
                     </form>
+
                 </Col>
             </Row>
-
-
-
         </div>
+
+
+
 
 
     )

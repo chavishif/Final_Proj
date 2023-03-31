@@ -6,7 +6,7 @@ const ShippingFooter = () => {
     <div className="shipping-container">
       <h3 className="shipping-header">SHIPPING &amp; DELIVERY</h3>
       <p><strong>SHIPPING INFORMATION</strong></p>
-      <p>We hope you love your REFY delivery - that's why we've made shipping as easy as possible. All of our shipping is tracked - you will receive confirmation of your tracking number once your order has been packed.</p>
+      <p>We hope you love your Vital delivery - that's why we've made shipping as easy as possible. All of our shipping is tracked - you will receive confirmation of your tracking number once your order has been packed.</p>
       <p>For full information on all of our shipping rates by country please see below:</p>
 
       <table className="shipping-table">
@@ -23,66 +23,66 @@ const ShippingFooter = () => {
           <tr>
             <td>United Kingdom</td>
             <td>Standard Shipping</td>
-            <td>1-3 Working Days</td>
+            <td>7 Working Days</td>
             <td>£3.99</td>
           </tr>
           <tr>
             <td>United Kingdom</td>
             <td>Free Shipping Over £30.00</td>
-            <td>1-3 Working Days</td>
+            <td>7 Working Days</td>
             <td>FREE</td>
           </tr>
           <tr>
             <td>United Kingdom</td>
-            <td>REFY Premium Delivery (Unlimited Delivery for 1 Year)</td>
-            <td>1-3 Working Days</td>
+            <td>Vital Premium Delivery (Unlimited Delivery for 1 Year)</td>
+            <td>7 Working Days</td>
             <td>£6.99</td>
           </tr>
           <tr>
             <td>Republic of Ireland</td>
             <td>Standard Shipping</td>
-            <td>2-4 Working Days</td>
+            <td>7 Working Days</td>
             <td>£3.99</td>
           </tr>
           <tr>
             <td>Republic of Ireland</td>
-            <td>Duties &amp; Taxes paid by REFY</td>
+            <td>Duties &amp; Taxes paid by Vital</td>
             <td></td>
             <td></td>
           </tr>
           <tr>
             <td>United States</td>
             <td>Express Shipping</td>
-            <td>1-3 Working Days</td>
+            <td>7 Working Days</td>
             <td>£5.99</td>
           </tr>
           <tr>
             <td>United States</td>
-            <td>Duties &amp; Taxes paid by REFY</td>
+            <td>Duties &amp; Taxes paid by Vital</td>
             <td></td>
             <td></td>
           </tr>
           <tr>
             <td>Europe (Zone 1)</td>
             <td>Standard Delivery</td>
-            <td>3-5 Working Days</td>
+            <td>7 Working Days</td>
             <td>£5.99</td>
           </tr>
           <tr>
             <td>Europe (Zone 2)</td>
             <td>Standard Delivery</td>
-            <td>3-5 Working Days</td>
+            <td>7 Working Days</td>
             <td>£7.99</td>
           </tr>
           <tr>
             <td>Europe (Zone 3)</td>
             <td>Standard Delivery</td>
-            <td>3-5 Working Days</td>
+            <td>7 Working Days</td>
             <td>£14.99</td>
           </tr>
           <tr>
             <td>Europe</td>
-            <td>Duties &amp; Taxes paid by REFY</td>
+            <td>Duties &amp; Taxes paid by Vital</td>
             <td></td>
             <td></td>
           </tr>
@@ -102,7 +102,7 @@ const ShippingFooter = () => {
   <p className="shipping-note">Please note that we are unable to refund any customs duties or taxes that may have been incurred as these are the responsibility of the recipient.</p>
 
 CONTACT US
-If you have any further questions about our shipping and delivery or our returns policy, please don't hesitate to contact us at info@refybeauty.com. We're always happy to help!
+If you have any further questions about our shipping and delivery or our returns policy, please don't hesitate to contact us at info@vitalFurniture.com. We're always happy to help!
 </div>
 </div>
 

@@ -3,74 +3,72 @@ from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from base.models import Review
 from base.models import Product
 from rest_framework import status
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from rest_framework.views import APIView
-from base.serializers import productSerializer
+from base.serializers import ProductSerializer
 
 
-# class ProductView(APIView):
-#     def get(self, request):
-#         my_model = Product.objects.all()
-#         serializer = productSerializer(my_model, many=True)
-#         return Response(serializer.data)
+
 
 class ProductView(APIView):
     def get(self, request):
         my_model = Product.objects.all()
-        serializer = productSerializer(my_model, many=True)
+        serializer = ProductSerializer(my_model, many=True)
         return Response(serializer.data)
 
 
 
-
-
-# review from glasses project
-
-# @api_view(['POST', ])
-# @permission_classes([IsAuthenticated])
-# def createProductReview(request, pk):
-
-#     product = Product.objects.get(_id=pk)
-#     user = request.user
-#     data = request.data
-
-#     """
-#     Case 1: Customer already written a review
-#     Case 2: Rating is not entered
-#     Case 3: Create the review
-#     """
-
-#     alreadyExist = product.review_set.filter(user=user).exists()
-
-#     if alreadyExist:
-#         content = {'detail':"Product Already Reviewed"}
-#         return Response(content, status=status.HTTP_400_BAD_REQUEST)
-
-#     elif data['rating'] == 0:
-#         content = {'detail':"Please Select Rating"}
-#         return Response(content, status=status.HTTP_400_BAD_REQUEST)
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def createProductReview(request):
+    user = request.user
+    data = request.data
+    product_id = data['product']
     
-#     else:
-#         review = Review.objects.create(
-#             user = user,
-#             product = product,
-#             name = user.username,
-#             rating = data['rating'],
-#             comment = data['comment'],
-#         )
-        
-#         reviews = product.review_set.all()
-#         product.numReviews = len(reviews)
+    try:
+        product = Product.objects.get(id=product_id)
+    except Product.DoesNotExist:
+        content = {'detail': 'Product not found'}
+        return Response(content, status=status.HTTP_404_NOT_FOUND)
 
-#         total = 0
-#         for review in reviews:
-#             total+=review.rating
+    # product = Product.objects.get(name=name)
 
-#         product.rating = total / len(reviews)
+    # 1 - Review already exists
+    alreadyExists = product.review_set.filter(user=user).exists()
+    if alreadyExists:
+        content = {'detail': 'Product already reviewed'}
+        return Response(content)
 
-#         product.save()
+    # 2 - No Rating or 0
+    elif data['rating'] == 0:
+        content = {'detail': 'Please select a rating'}
+        return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
-#     return Response("Review added successfully")
-    # return Response({'detail':"Review added successfully"})
+    # 3 - Create review
+    else:
+        review = Review.objects.create(
+            user=user,
+            name=user.username,
+            product=product,
+            rating=data['rating'],
+            comment=data['comment'],
+        )
+  
+
+    reviews = product.review_set.all()
+    product.numReviews = len(reviews)
+
+    total = 0
+    for i in reviews:
+        total += i.rating
+
+    product.rating = total / len(reviews)
+    product.save()
+
+    return Response({'detail': 'Review Added'})
+
+
+

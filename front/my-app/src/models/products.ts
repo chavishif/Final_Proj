@@ -1,3 +1,5 @@
+import { Review } from "./review";
+
 export interface Product {
     id:number
     name: string;
@@ -10,5 +12,8 @@ export interface Product {
     subcategory: string;
     subimage: string;
     proimage: string;
+    reviews?:Review[];
+    rating : string
+    numReviews : number
 
   }

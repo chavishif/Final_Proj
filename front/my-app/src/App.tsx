@@ -23,6 +23,7 @@ import About from "./features/components/general/About";
 import HomePage from "./features/components/general/HomePage";
 import Footer from "./features/components/general/Footer";
 import SearchBox from "./features/components/general/SearchBox";
+import { NavDropdown } from "react-bootstrap";
 
 export default function App(): JSX.Element {
 
@@ -54,60 +55,60 @@ export default function App(): JSX.Element {
     setUsername(localStorage.getItem("username"));
     // other code here
   }, [logged]);
-  
+
   const remember = localStorage.getItem("remember")
 
 
-useEffect(() => {
+  useEffect(() => {
 
-  const token = localStorage.getItem("refresh")
-  let remember = localStorage.getItem("remember")
-  if (remember !== null)
-    if (JSON.parse(remember) === true) {
-      if (token)
-        dispatch(refreshAsync(token))
-    }
-}, [])
-return (
+    const token = localStorage.getItem("refresh")
+    let remember = localStorage.getItem("remember")
+    if (remember !== null)
+      if (JSON.parse(remember) === true) {
+        if (token)
+          dispatch(refreshAsync(token))
+      }
+  }, [])
+  return (
 
-  <Layout>
-    <Wishlist />
-    <Cart />
-    <Navbar isBordered variant="sticky">
+    <Layout>
+      <Wishlist />
+      <Cart />
+      <Navbar isBordered variant="sticky">
 
-    <Navbar.Brand>
-        <Navbar.Toggle aria-label="toggle navigation" />
-        <RouterLink to="/home" style={{ textDecoration: 'none', color: "black" }}>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <img src={logo} alt="Logo" style={{ height: "50px", marginRight: "10px" }} />
-          <Text b color="inherit" hideIn="xs">
-            
-            </Text>
-          </div>
-        </RouterLink>
-      </Navbar.Brand>
+        <Navbar.Brand>
+          <Navbar.Toggle aria-label="toggle navigation" />
+          <RouterLink to="/home" style={{ textDecoration: 'none', color: "black" }}>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <img src={logo} alt="Logo" style={{ height: "50px", marginRight: "10px" }} />
+              <Text b color="inherit" hideIn="xs">
+
+              </Text>
+            </div>
+          </RouterLink>
+        </Navbar.Brand>
 
 
-      <Navbar.Content
-        css={{
-          "@xsMax": {
-            w: "100%",
-            jc: "space-between",
-
-          },
-        }}
-      >
-        <Navbar.Item
+        <Navbar.Content
           css={{
             "@xsMax": {
               w: "100%",
-              jc: "center",
+              jc: "space-between",
 
             },
           }}
         >
-        <SearchBox collapseItems={collapseItems}/>
-          {/* <Input
+          <Navbar.Item
+            css={{
+              "@xsMax": {
+                w: "100%",
+                jc: "center",
+
+              },
+            }}
+          >
+            <SearchBox collapseItems={collapseItems} />
+            {/* <Input
             clearable
             contentLeft={
               <SearchIcon fill="var(--nextui-colors-accents6)" size={16} />
@@ -125,65 +126,68 @@ return (
               },
             }}
             placeholder="Search..." */}
-          {/* /> */}
-        </Navbar.Item>
-        <button className="btn btn-outline-dark" type="button"
-          data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-          aria-controls="offcanvasRight" >
-          <ShoppingCart size={18} />
-          {quantity !== 0 && <span>{quantity}</span>}
-        </button>
-        {/* <RouterLink to="/cart" >
+            {/* /> */}
+          </Navbar.Item>
+          <button className="btn btn-outline-dark" type="button"
+            data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+            aria-controls="offcanvasRight" >
+            <ShoppingCart size={18} />
+            {quantity !== 0 && <span>{quantity}</span>}
+          </button>
+          {/* <RouterLink to="/cart" >
             <ShoppingCart size={18} />
             {quantity !== 0 && <span>{quantity}</span>}
           </RouterLink> */}
-        <button className="btn btn-outline-dark"
-          type="button" data-bs-toggle="offcanvas"
-          data-bs-target="#offcanvas2"
-          aria-controls="offcanvas2">
+          <button className="btn btn-outline-dark"
+            type="button" data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvas2"
+            aria-controls="offcanvas2">
 
-          <Heart size={18} />
-          {wishlistQuantity !== 0 && <span>{wishlistQuantity}</span>}
-        </button>
-
-{/* add remember */}
-        {logged || remember === "true"? (
-          <>
-            {`Welcome ${username}`}
-            <RouterLink to="/" onClick={() => { dispatch(logout()); }}>Log out</RouterLink>
-
-          </>
-        ) : (
-          <button className="btn btn-outline-dark" >
-            <RouterLink to="/auth">
-              <User size={18} style={{ "color": "black" }} />
-            </RouterLink>
+            <Heart size={18} />
+            {wishlistQuantity !== 0 && <span>{wishlistQuantity}</span>}
           </button>
-        )}
-      </Navbar.Content>
 
-      <Navbar.Collapse>
-        {collapseItems.map((item, index) => (
-          <Navbar.CollapseItem key={item.name}>
-            <RouterLink
-            style={{textDecoration:"none", color:"black"}}
-              color="inherit"
-              // css={{
-              //   minWidth: "100%",
-              // }}
-              to={item.path}
-            >
-              {item.name}
-            </RouterLink>
-          </Navbar.CollapseItem>
-        ))}
-      </Navbar.Collapse>
-    </Navbar>
+          {/* add remember */}
+          {logged || remember === "true" ? (
+            <>
 
-    <Outlet />
-    <Footer />
-  </Layout >
+              <NavDropdown title={username} id="basic-nav-dropdown">
+                <NavDropdown.Item as={RouterLink} to="/profile">My Profile</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item onClick={() => { dispatch(logout()); }}>Log out</NavDropdown.Item>
+              </NavDropdown>
+            </>
+          ) : (
+            <button className="btn btn-outline-dark" >
+              <RouterLink to="/auth">
+                <User size={18} style={{ "color": "black" }} />
+              </RouterLink>
+            </button>
+          )}
+        </Navbar.Content>
 
-)
+        <Navbar.Collapse>
+          {collapseItems.map((item, index) => (
+            <Navbar.CollapseItem key={item.name}>
+              <RouterLink
+                style={{ textDecoration: "none", color: "black" }}
+                color="inherit"
+                // css={{
+                //   minWidth: "100%",
+                // }}
+                to={item.path}
+              >
+                {item.name}
+              </RouterLink>
+            </Navbar.CollapseItem>
+          ))}
+        </Navbar.Collapse>
+      </Navbar>
+
+      <Outlet />
+      <Footer />
+    </Layout >
+
+  )
 }
 

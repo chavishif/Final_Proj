@@ -9,6 +9,7 @@ export interface LoginState {
  access : string
  refresh : string
  username:string
+ email : string
  registered : boolean
 }
 
@@ -17,7 +18,8 @@ const initialState: LoginState = {
   access: '',
   username: '',
   registered: false,
-  refresh: ''
+  refresh: '',
+  email: ''
 };
 
 export const registerAsync = createAsyncThunk(
@@ -77,6 +79,7 @@ export const loginSlice = createSlice({
        localStorage.setItem("refresh",state.refresh)
       // jwt_decode -  packege that enables access to pablic token part (can be seen at jwt_decode site)
        state.username = jwt_decode<any>(state.access).username
+       state.email = jwt_decode<any>(state.access).email
        localStorage.setItem("username",state.username)
       })
       .addCase(registerAsync.fulfilled, (state, action) => {
@@ -91,6 +94,7 @@ export const loginSlice = createSlice({
           localStorage.setItem("access",state.access)
           localStorage.setItem("refresh", state.refresh)
           state.username=jwt_decode<any>(state.access).username
+          state.email = jwt_decode<any>(state.access).email
           state.logged =true
         })
   },
@@ -100,6 +104,7 @@ export const { logout } = loginSlice.actions;
 export const selectLooged = (state: RootState) => state.login.logged;
 export const selectAccess = (state: RootState) => state.login.access;
 export const selectUsername = (state: RootState) => state.login.username;
+export const selectEmail = (state: RootState) => state.login.email;
 export const selectRegistered = (state: RootState) => state.login.registered;
 
 

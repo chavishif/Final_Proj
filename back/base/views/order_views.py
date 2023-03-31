@@ -3,6 +3,7 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
+from base.serializers import ShippingAddressSerializer
 
 from base.models import Product, Order, OrderItem, ShippingAddress
 from base.serializers import ProductSerializer, OrderSerializer
@@ -83,7 +84,39 @@ def getMyOrders(request):
 
     return Response(serializer.data)
 
+# get my shipping address
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getMyShippingAddressbyid(request, pk):
+    user = request.user
+    try:
+        order = user.order_set.get(_id=pk)
+        shipping = ShippingAddress.objects.get(order=order)
+        shipping_list = [shipping]
+        serializer = ShippingAddressSerializer(shipping_list, many=True)
+        return Response(serializer.data)
+    except Order.DoesNotExist:
+        return Response({'detail': 'Order does not exist.'}, status=status.HTTP_404_NOT_FOUND)
+    except ShippingAddress.DoesNotExist:
+        return Response({'detail': 'Shipping address does not exist.'}, status=status.HTTP_404_NOT_FOUND)
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getMyShippinginfo(request):
+    user = request.user
+    try:
+        order = user.order_set.latest('createdAt')
+        shipping = ShippingAddress.objects.get(order=order)
+        serializer = ShippingAddressSerializer(shipping)
+        return Response(serializer.data)
+    except Order.DoesNotExist:
+        return Response({'detail': 'Order does not exist.'}, status=status.HTTP_404_NOT_FOUND)
+    except ShippingAddress.DoesNotExist:
+        return Response({'detail': 'Shipping address does not exist.'}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+# delete
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
 def getOrders(request):
@@ -102,12 +135,12 @@ def getOrderById(request, pk):
         order = Order.objects.get(_id=pk)
         if user.is_staff or order.user == user:
             serializer = OrderSerializer(order, many=False)
-            return Response(serializer.data)
+            return Response([serializer.data])  # Wrap data in a list
         else:
             Response({'detail': 'Not authorized to view this order'},
-                     status=status.HTTP_400_BAD_REQUEST)
+                    status=status.HTTP_400_BAD_REQUEST)
     except:
-        return Response({'detail': 'Order does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'detail': 'Order does not exist'}, status=status.HTTP_400)
 
 
 @api_view(['PUT'])

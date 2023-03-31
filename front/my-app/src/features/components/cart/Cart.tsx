@@ -22,7 +22,6 @@ const Cart = () => {
     navigate("/shipping");
   }
   
-console.log(logged)
 
 
   return (

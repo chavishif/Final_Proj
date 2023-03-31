@@ -9,6 +9,9 @@ import { AiOutlineArrowLeft, AiOutlineHeart } from "react-icons/ai";
 import { selectProducts } from '../../../services/productsSlice';
 import { addToWishlist } from '../../../services/wishlistSlice';
 import { addToCart } from '../../../services/cartSlice';
+import { Card , Col, ListGroup, Row } from 'react-bootstrap';
+import Message from '../../Profile/Message';
+import Rating from './Rating';
 
 const ProductDetails = () => {
   const { id } = useParams<{ id: any }>();
@@ -33,7 +36,7 @@ const ProductDetails = () => {
       name: product.name, price: product.price, quantity
     }))
   }
-  
+
   const handleAddToCart = (product: any) => {
     dispatch(addToCart({
       id: product.id, image: `http://127.0.0.1:8000${product.proimage}`,
@@ -68,6 +71,7 @@ const ProductDetails = () => {
             </div>
             <p className="price">${product.price}</p>
 
+         
 
             <button className="button-33"
               type="button"
@@ -79,25 +83,45 @@ const ProductDetails = () => {
             >
               Add to cart </button>
 
-       
-              <button className="btn btn-outline-dark"
-                type="button" data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvas2"
-                aria-controls="offcanvas2" onClick={() => handleAddToWishlist(product)}>
-                <AiOutlineHeart />
 
-              </button>
+            <button className="btn btn-outline-dark"
+              type="button" data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvas2"
+              aria-controls="offcanvas2" onClick={() => handleAddToWishlist(product)}>
+              <AiOutlineHeart />
 
-
-              {/* <Link to="/wishlist">
-                <AiOutlineHeart />
-              </Link> */}
-
+            </button>
+            <br></br>
+            <br></br>
           </div>
+          <div>
+            <Row>
+
+              <Col md={6}>
+                <h4>Reviews</h4>
+                {product.reviews && product.reviews.length === 0 && <Message variant='info'>No Reviews</Message>}
+
+                {product.reviews && product.reviews.map((review) => (
+                  <ListGroup.Item key={review._id}>
+                    <strong>{review.name}</strong>
+                    <Rating value={review.rating} color='#f8e825' />
+                    <p>{review.createdAt.substring(0, 10)}</p>
+                    <p>{review.comment}</p>
+                  </ListGroup.Item>
+                ))}
+              </Col>
+            </Row>
+          </div>
+
+
         </>
       ) : (
-        <div></div>
+        <div>
+
+        </div>
+
       )}
+
     </div>
   );
 };
