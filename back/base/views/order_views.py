@@ -34,17 +34,7 @@ def addOrderItems(request):
             totalPrice=data['totalPrice']
         )
 
-        # (2) Create shipping address
-
-        shipping = ShippingAddress.objects.create(
-            order=order,
-            address=data['address'],
-            city=data['city'],
-            postalCode=data['postalCode'],
-            country=data['country'],
-            phone=data['phone'],
-        )
-
+      
         # Calculate the delivery time
         delivery_time = timezone.now() + timedelta(days=6)
 
@@ -73,6 +63,51 @@ def addOrderItems(request):
         serializer = OrderSerializer(order, many=False)
         return Response(serializer.data)
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def addshipping(request):
+    user = request.user
+    data = request.data
+
+    # Check if the user already has a shipping address
+    try:
+        shipping = ShippingAddress.objects.get(user=user)
+        return Response({'message': 'Shipping address already exists.'})
+    except ShippingAddress.DoesNotExist:
+        # Create shipping address
+        shipping = ShippingAddress.objects.create(
+            user=user,
+            address=data['address'],
+            city=data['city'],
+            postalCode=data['postalCode'],
+            country=data['country'],
+            phone=data['phone']
+        )
+        return Response({'message': 'Shipping address added successfully.'})
+    
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def updateshipping(request):
+    user = request.user
+    data = request.data
+    # Check if the user has a shipping address
+    try:
+        shipping = ShippingAddress.objects.get(user=user)
+    except ShippingAddress.DoesNotExist:
+        return Response({'message': 'No shipping address found.'})
+
+    # Update shipping address fields
+    shipping.address = data.get('address', shipping.address)
+    shipping.city = data.get('city', shipping.city)
+    shipping.postalCode = data.get('postalCode', shipping.postalCode)
+    shipping.country = data.get('country', shipping.country)
+    shipping.phone = data.get('phone', shipping.phone)
+    shipping.save()
+
+    return Response({'message': 'Shipping address updated successfully.'})
+
+
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -85,28 +120,27 @@ def getMyOrders(request):
     return Response(serializer.data)
 
 # get my shipping address
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def getMyShippingAddressbyid(request, pk):
-    user = request.user
-    try:
-        order = user.order_set.get(_id=pk)
-        shipping = ShippingAddress.objects.get(order=order)
-        shipping_list = [shipping]
-        serializer = ShippingAddressSerializer(shipping_list, many=True)
-        return Response(serializer.data)
-    except Order.DoesNotExist:
-        return Response({'detail': 'Order does not exist.'}, status=status.HTTP_404_NOT_FOUND)
-    except ShippingAddress.DoesNotExist:
-        return Response({'detail': 'Shipping address does not exist.'}, status=status.HTTP_404_NOT_FOUND)
+# @api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+# def getMyShippingAddressbyid(request, pk):
+#     user = request.user
+#     try:
+#         order = user.order_set.get(_id=pk)
+#         shipping = ShippingAddress.objects.get(order=order)
+#         shipping_list = [shipping]
+#         serializer = ShippingAddressSerializer(shipping_list, many=True)
+#         return Response(serializer.data)
+#     except Order.DoesNotExist:
+#         return Response({'detail': 'Order does not exist.'}, status=status.HTTP_404_NOT_FOUND)
+#     except ShippingAddress.DoesNotExist:
+#         return Response({'detail': 'Shipping address does not exist.'}, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getMyShippinginfo(request):
     user = request.user
     try:
-        order = user.order_set.latest('createdAt')
-        shipping = ShippingAddress.objects.get(order=order)
+        shipping = ShippingAddress.objects.get(user=user)
         serializer = ShippingAddressSerializer(shipping)
         return Response(serializer.data)
     except Order.DoesNotExist:

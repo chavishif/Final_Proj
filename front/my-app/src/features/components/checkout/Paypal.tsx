@@ -1,5 +1,7 @@
-import React, { useEffect } from "react";
-import { useAppDispatch } from '../../../app/hooks';
+import React, { useEffect , useState} from "react";
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { useNavigate } from "react-router-dom";
+import { getMyOrdersAsync, selectMYOrders } from "../../Profile/profileSlice";
 
 declare global {
   interface Window {
@@ -9,6 +11,18 @@ declare global {
 
 const PayPal: React.FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate()
+  const myOrders = useAppSelector(selectMYOrders);
+  const lastOrderId = myOrders.length > 0 ? myOrders[myOrders.length - 1]._id : null;
+  const access = useState(localStorage.getItem("access")||"");
+
+ const finishOrder = () =>{
+  navigate(`/myorder/${lastOrderId}`);
+ }
+console.log(lastOrderId)
+ useEffect(() => {
+  dispatch(getMyOrdersAsync(access[0]))
+}, [])
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -54,6 +68,7 @@ const PayPal: React.FC = () => {
     <div id="smart-button-container">
       <div style={{ textAlign: "center" }}>
         <div id="paypal-button-container"></div>
+        <button className="button-33" role="button" onClick={finishOrder}>finish order</button>
       </div>
     </div>
   );

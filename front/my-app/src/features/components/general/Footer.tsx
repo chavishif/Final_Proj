@@ -97,7 +97,7 @@ function Footer() {
                 <p>123 Main St.</p>
                 <p>Anytown, USA 12345</p>
                 <p>(123) 456-7890</p>
-                <a href="mailto:info@example.com" style={linkStyle}>info@example.com</a>
+                <a href="mailto:info@example.com" style={linkStyle}>info@vitalFurniture.com</a>
             </div>
         </footer>
     );

@@ -2,11 +2,11 @@ import CartItemType from "./cartItem"
 
 export default interface ShippingType {
     image?: any
-    address: string
-    city: string
-    postalCode: string
-    country: string
-    phone: string
+    address?: string
+    city?: string
+    postalCode?: string
+    country?: string
+    phone?: string
     cartItems?:any
     taxPrice?:any
     shippingPrice?:any
@@ -14,6 +14,7 @@ export default interface ShippingType {
     isDelivered?:boolean
     deliveredAt?:string
     orderItems?:CartItemType[]
+   
 
 
 }

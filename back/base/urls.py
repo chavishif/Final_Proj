@@ -1,6 +1,7 @@
 # from base.views.product_views import createProductReview
+from base.views.order_views import updateshipping
+from base.views.order_views import addshipping
 from base.views.order_views import getMyShippinginfo
-from base.views.order_views import getMyShippingAddressbyid
 from base.views.product_views import createProductReview
 from base.views.order_views import addOrderItems, getMyOrders, getOrderById, getOrders, updateOrderToDelivered, updateOrderToPaid
 from base.views.product_views import ProductView
@@ -21,11 +22,14 @@ urlpatterns = [
     path('register/', register, name='register'),
     # admin : not neccessery
     path('getorders', getOrders, name='orders'),
-    # not checked
     path('add/', addOrderItems, name='add'),
+    path('addshipping/', addshipping, name='addshipping'),
+    path('updshipping/', updateshipping, name='updshipping'),
+
+    
     # work
     path('myorders/', getMyOrders, name='myorders'),
-    path('myshippingorders/<str:pk>', getMyShippingAddressbyid, name='myorders'),
+    # path('myshippingorders/<str:pk>', getMyShippingAddressbyid, name='myorders'),
     path('myshippinginfo/', getMyShippinginfo, name='shipping-info'),
 
     path('reviews/', createProductReview, name="create-review"),

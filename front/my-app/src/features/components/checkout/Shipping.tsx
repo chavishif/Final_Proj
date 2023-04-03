@@ -3,7 +3,7 @@ import { Button, Card, Col, ListGroup, Row } from 'react-bootstrap';
 import { Form, Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import ShippingType from '../../../models/shipping';
-import { createorderAsync } from '../../../services/shippingSlice';
+import { createorderAsync, createshippingAsync, updateshippingAsync } from '../../../services/shippingSlice';
 import "../../../styles/details.css"
 import { useNavigate } from 'react-router-dom';
 import { ThunkDispatch } from 'redux-thunk';
@@ -43,37 +43,57 @@ const Shipping = () => {
     const totalOrder = (Number(cartItems.price) + Number(shippingPrice) + Number(taxPrice)).toFixed(2)
     const navigate = useNavigate();
 
-    const handleorder = (dispatch: ThunkDispatch<{}, {}, AnyAction>, navigate: (path: string) => void) => {
+    const handleOrder = (dispatch: ThunkDispatch<{}, {}, AnyAction>, navigate: (path: string) => void) => {
         return async (event: React.MouseEvent<HTMLButtonElement>) => {
             event.preventDefault(); // Prevent the default behavior of the button
-            // Check if any of the required fields are empty
-            if (!address || !city || !country || !phone || !postalCode || !cartItems || !taxPrice || !shippingPrice || !totalOrder) {
-                alert('Fill all the fields');
-                return;
-            }
-            try {
-                await dispatch(
-                    createorderAsync({
-                        address,
-                        city,
-                        country,
-                        phone,
-                        postalCode,
-                        cartItems,
-                        taxPrice,
-                        shippingPrice,
-                        totalPrice: totalOrder
 
-                    })
-                );
-                navigate('/paypal');
-            } catch (error) {
-                console.error(error);
-                // Handle error and display a message to the user
+            if ((address || MyAddress.address) && (city || MyAddress.city) && (country || MyAddress.country) && (phone || MyAddress.phone) && (postalCode || MyAddress.postalCode)) {
+
+                try {
+                    // Dispatch the create order and create shipping actions
+                    await Promise.all([
+                        dispatch(createorderAsync({
+                            cartItems,
+                            taxPrice,
+                            shippingPrice,
+                            totalPrice
+                        })),
+                        dispatch(createshippingAsync({
+                            address,
+                            city,
+                            country,
+                            phone,
+                            postalCode,
+                        }))
+                    ]);
+
+                    // Navigate to the PayPal page
+                    navigate('/paypal');
+                } catch (error) {
+                    console.error(error);
+                    // Handle the error and display a message to the user
+                    alert('An error occurred while placing your order. Please try again later.');
+                }
+
+            } else {
+                alert('Please fill all the required fields.');
+                return; // Exit the function early if any required field is missing
             }
-        };
+        }
     };
 
+
+    const handleupdate = () => {
+        dispatch(updateshippingAsync({
+            address: address || MyAddress.address,
+            phone: phone || MyAddress.phone,
+            postalCode: postalCode || MyAddress.postalCode,
+            country: country || MyAddress.country,
+            city: city || MyAddress.city,
+        })).then(response => {
+              alert("The changes are saved");
+        })
+    }
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
@@ -82,8 +102,6 @@ const Shipping = () => {
     useEffect(() => {
 
         dispatch(getmyshippinginfoAsync(access[0]))
-        console.log(MyAddress);
-
     }, [])
 
 
@@ -177,7 +195,7 @@ const Shipping = () => {
                             <h2>Shipping Details</h2>
                             Name : {username}
 
-                            {MyAddress && MyAddress ?
+                            {MyAddress.address != "" ?
                                 <>
                                     <div className="form-group">
                                         <label style={{ fontSize: "22px" }} htmlFor="address">Address</label>
@@ -186,7 +204,7 @@ const Shipping = () => {
                                             placeholder='Street Number, Floor'
                                             type="text"
                                             id="address"
-                                            value={MyAddress.address}
+                                            defaultValue={MyAddress.address}
                                             onChange={(event) => setAddress(event.target.value)}
                                         />
                                     </div>
@@ -197,7 +215,8 @@ const Shipping = () => {
                                             placeholder='City'
                                             type="text"
                                             id="city"
-                                            value={MyAddress.city}
+                                            defaultValue={MyAddress.city}
+
                                             onChange={(event) => setCity(event.target.value)}
                                         />
                                     </div>
@@ -208,7 +227,7 @@ const Shipping = () => {
                                             placeholder='Postal Code'
                                             type="text"
                                             id="postalCode"
-                                            value={MyAddress.postalCode}
+                                            defaultValue={MyAddress.postalCode}
                                             onChange={(event) => setPostalCode(event.target.value)}
                                         />
                                     </div>
@@ -219,7 +238,7 @@ const Shipping = () => {
                                             placeholder='Country'
                                             type="text"
                                             id="country"
-                                            value={MyAddress.country}
+                                            defaultValue={MyAddress.country}
                                             onChange={(event) => setCountry(event.target.value)}
                                         />
                                     </div>
@@ -228,7 +247,7 @@ const Shipping = () => {
                                         <input
                                             required
                                             placeholder='Phone number'
-                                            type="number"
+                                            type="text"
                                             id="phone"
                                             value={MyAddress.phone}
                                             onChange={(event) => setPhone(event.target.value)}
@@ -295,7 +314,8 @@ const Shipping = () => {
                                 </>
                             }
                             <br></br>
-                            <button className="button-33" role="button" onClick={handleorder(dispatch, navigate)}>continue to payment</button>
+                            <button className="button-33" role="button" onClick={handleOrder(dispatch, navigate)}>continue to payment</button>
+                            <button className="button-33" role="button" onClick={handleupdate}>save changes</button>
 
                         </div>
                     </form>

@@ -32,7 +32,7 @@ const MyOrder = () => {
 // console.log(MyOrder)
   useEffect(() => {
     dispatch(getMyOrderByIdsAsync({ access: access[0], id }))
-    dispatch(getMyAddressByIdsAsync({ access: access[0], id }))
+    dispatch(getMyAddressByIdsAsync({ access: access[0] }))
 
   }, [])
 
@@ -49,19 +49,11 @@ const MyOrder = () => {
               <h2>Shipping</h2>
               <p><strong>Name: </strong> {username}</p>
               <p><strong>Email: </strong>{email}</p>
-              <p><strong>Phone: </strong>
-                {MyAddress.map((add: any, index: any) => (
-                  <div key={index}>
-                    {add.phone}
-                  </div>
-                ))}
-              </p>
+              <p><strong>Phone: </strong>{MyAddress.phone} </p>
+          
+             
               <p><strong>Shipping: </strong>
-                {MyAddress.map((add: any, index: any) => (
-                  <div key={index}>
-                    {add.address}, {add.city}, {add.postalCode} , {add.country}
-                  </div>
-                ))}
+              {MyAddress.address}, {MyAddress.city}, {MyAddress.postalCode} , {MyAddress.country}
               </p>
               {MyOrder.map((order: any, index: any) => (
                 <div key={index}>

@@ -12,7 +12,7 @@ export interface LoginState {
   profile: Iprof[]
   myOrders: MyOrders[]
   myOrdersById: ShippingType[]
-  myaddressgById: ShippingType[]
+  myaddressgById: ShippingType
   myshippinginfo : ShippingType
 }
 
@@ -21,7 +21,7 @@ const initialState: LoginState = {
   refreshflag: false,
   myOrders: [],
   myOrdersById: [],
-  myaddressgById: [],
+  myaddressgById: {},
   myshippinginfo: {address:"",city:"",country:"", phone:"", postalCode:"" }
 };
 
@@ -144,6 +144,7 @@ export const profileSlice = createSlice({
       })
       .addCase(getMyAddressByIdsAsync.fulfilled, (state, action) => {
         state.myaddressgById = action.payload
+        console.log( state.myaddressgById)
 
 
       })

@@ -89,7 +89,7 @@ export function myOrdersById(accessId : any) {
 
 export function myAddressById(accessId : any) {
   return new Promise<any>((resolve, reject) => {
-   axios.get(MY_SERVER_MYADDRESSSBYID + `${accessId.id}`,{
+   axios.get(MY_SERVER_GETSHIPPINGINFO ,{
      headers: {
        'Authorization': `Bearer ${accessId.access}`
      }
