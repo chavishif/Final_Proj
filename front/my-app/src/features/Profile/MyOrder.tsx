@@ -41,7 +41,7 @@ const MyOrder = () => {
   return (
 
     <div>
-      <h1>Order</h1>
+      <h1>Order Details</h1>
       <Row>
         <Col md={6}>
           <ListGroup variant='flush'>

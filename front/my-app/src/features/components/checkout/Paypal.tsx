@@ -2,6 +2,8 @@ import React, { useEffect , useState} from "react";
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { useNavigate } from "react-router-dom";
 import { getMyOrdersAsync, selectMYOrders } from "../../Profile/profileSlice";
+import { clearCart } from "../../../services/cartSlice";
+import { clearWishlist } from "../../../services/wishlistSlice";
 
 declare global {
   interface Window {
@@ -17,6 +19,8 @@ const PayPal: React.FC = () => {
   const access = useState(localStorage.getItem("access")||"");
 
  const finishOrder = () =>{
+  dispatch(clearCart())
+  dispatch(clearWishlist())
   navigate(`/myorder/${lastOrderId}`);
  }
 console.log(lastOrderId)

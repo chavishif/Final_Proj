@@ -56,15 +56,21 @@ export default function LoginPage() {
             localStorage.setItem("remember", JSON.stringify(remember))
     }, [remember])
 
-    const handleClick = () => {
-        if (username != "" && passwordInput != "") {
-            dispatch(loginAsync({ username: username, password: passwordInput }))
-            navigate('/');
+    const handleClick = async () => {
+        if (username !== "" && passwordInput !== "") {
+            const response = await dispatch(loginAsync({ username: username, password: passwordInput }));
+            console.log(response )
+            if (!response.payload) {
+                alert('Incorrect username or password');
+            } else {
+                navigate('/');
+            }
         }
         else {
-            notlogin()
+            alert('Please enter both username and password');
         }
     };
+    
 
 
 

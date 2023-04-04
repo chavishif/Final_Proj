@@ -42,7 +42,8 @@ const Products = () => {
       image: `http://127.0.0.1:8000${product.proimage}`,
       name: product.name,
       price: product.price,
-      quantity: 1
+      quantity: 1,
+      count_in_stock : product.count_in_stock
     }));
   };
 
@@ -61,8 +62,6 @@ const Products = () => {
 
   return (
     <div>
-
-
       <div>
         <div className="subcategories-container">
           {filteredSubcats.map((subcat) => (
@@ -70,17 +69,7 @@ const Products = () => {
               {' '}
               <button
 
-                onClick={() => handleSubcatClick(selectedCategory || "", subcat)}
-                className="subcategory-link"
-                style={{
-                  backgroundImage: `url(http://127.0.0.1:8000${filteredProducts.filter(
-                    (product) =>
-                      product.category === selectedCategory &&
-                      product.subcategory === subcat
-                  )[0]?.subimage})`,
-                  backgroundSize: "contain",
-                  backgroundRepeat: "no-repeat",
-                }}
+                onClick={() => handleSubcatClick(selectedCategory || "", subcat)}             
               >
                 <br></br>
                 {subcat}
@@ -111,11 +100,12 @@ const Products = () => {
                 height={200}
                 alt={product.name} />
             </Link>
-
             {/* reviews */}
             <Card.Text as="div">
               <div className="my-3">
                 <Rating value={product.rating} text={`${product.numReviews} reviews`} color={'#f8e825'} />
+              price:  ${product.price}
+
               </div>
             </Card.Text>
        

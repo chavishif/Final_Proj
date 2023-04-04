@@ -4,4 +4,5 @@ export default interface CartItemType{
     name:string;
     price:number;
     quantity:number;
+    count_in_stock?:number
 }

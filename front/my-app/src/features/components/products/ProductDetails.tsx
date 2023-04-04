@@ -9,7 +9,7 @@ import { AiOutlineArrowLeft, AiOutlineHeart } from "react-icons/ai";
 import { selectProducts } from '../../../services/productsSlice';
 import { addToWishlist } from '../../../services/wishlistSlice';
 import { addToCart } from '../../../services/cartSlice';
-import { Card , Col, ListGroup, Row } from 'react-bootstrap';
+import { Card, Col, ListGroup, Row } from 'react-bootstrap';
 import Message from '../../Profile/Message';
 import Rating from './Rating';
 
@@ -38,11 +38,22 @@ const ProductDetails = () => {
   }
 
   const handleAddToCart = (product: any) => {
-    dispatch(addToCart({
-      id: product.id, image: `http://127.0.0.1:8000${product.proimage}`,
-      name: product.name, price: product.price, quantity
-    }))
-  }
+    if (quantity <= product.count_in_stock) {
+      dispatch(
+        addToCart({
+          id: product.id,
+          image: `http://127.0.0.1:8000${product.proimage}`,
+          name: product.name,
+          price: product.price,
+          quantity,
+          count_in_stock:product.count_in_stock
+        })
+      );
+    } else {
+      alert(`${product.count_in_stock} in stock`);
+    }
+  };
+  
 
   return (
     <div className="details">
@@ -69,9 +80,21 @@ const ProductDetails = () => {
                 onChange={(e) => setQuantity(parseInt(e.target.value))} />
               <button onClick={incrementQuantity}>+</button>
             </div>
+            <br></br>
+
+            {/* low in stock */}
+            <div className="info"
+              style={{ backgroundColor: product.count_in_stock < 5 ? "yellow" : "inherit", fontWeight: "bold" }}>
+              {product.count_in_stock < 5 && product.count_in_stock > 0 ? <span> Low in stock </span>:""}
+              {product.count_in_stock <= 0 && <span>Out of stock</span>}
+            </div>
+
+
+
+
             <p className="price">${product.price}</p>
 
-         
+
 
             <button className="button-33"
               type="button"
@@ -120,9 +143,10 @@ const ProductDetails = () => {
 
         </div>
 
-      )}
+      )
+      }
 
-    </div>
+    </div >
   );
 };
 

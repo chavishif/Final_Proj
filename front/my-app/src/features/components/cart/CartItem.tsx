@@ -4,20 +4,29 @@ import { IoAddSharp, IoRemoveSharp } from "react-icons/io5";
 import  CartItemType  from "../../../models/cartItem";
 import  "../../../styles/details.css"
 import { Link } from "react-router-dom";
+
 interface Props {
-item: CartItemType;
+item: any;
 }
 
 const CartItem: React.FC<Props> = ({ item }) => {
 const dispatch = useDispatch();
-const { image, name, price, quantity } = item;
+const { image, name, price, quantity, count_in_stock } = item;
+
+
 
 const handleRemoveItem = (): void => {
 dispatch(removeFromCart(item));
 };
 
 const handleAddItemQuantity = (): void => {
-dispatch(addItemQuantity(item));
+  console.log("item")
+  if (item.quantity <= item.count_in_stock) {
+    dispatch(addItemQuantity(item));
+  }
+  else {
+    alert(`${item.count_in_stock} in stock`);
+  }
 };
 
 const handleSubtractItemQuantity = (): void => {

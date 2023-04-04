@@ -52,31 +52,29 @@ export const cartSlice = createSlice({
   initialState: loadState() || initialState, // initialize state from local storage if available
   reducers: {
     
-
     addToCart: (state, { payload }: PayloadAction<CartItemType>) => {
-      
-
       const isItemExist = state.cartItems.find((item) => item.id === payload.id);
       if (!isItemExist) {
+        if (payload.quantity > 1) {
+          payload.count_in_stock =  payload.count_in_stock && payload.count_in_stock - payload.quantity;
+        }
         state.cartItems = [...state.cartItems, { ...payload }];
-        state.quantity += payload.quantity
-
+        state.quantity += payload.quantity;
       } else {
         state.cartItems = state.cartItems.map((item) => {
           if (item.id === payload.id) {
-            return { ...item, quantity: item.quantity + payload.quantity}
-                    
-          
+            return { ...item, quantity: item.quantity + payload.quantity, count_in_stock: item.count_in_stock && item.count_in_stock - payload.quantity };
           } else {
             return item;
           }
         });
+        state.quantity += payload.quantity;
       }
-    
       state.totalAmount += Number(payload.price) * payload.quantity;
       state.quantity = state.cartItems.reduce((total, item) => total + item.quantity, 0);
       updateCartInLocalStorage(state.cartItems, state.totalAmount, state.quantity);
     },
+    
    
     removeFromCart: (state, { payload }: PayloadAction<CartItemType>) => {
       state.cartItems = state.cartItems.filter(
@@ -90,7 +88,7 @@ export const cartSlice = createSlice({
     addProdQuantity: (state, { payload }: PayloadAction<CartItemType>) => {
       const isItemExist = state.cartItems.find((item) => item.id === payload.id);
       if (!isItemExist) {
-        state.cartItems = [...state.cartItems, { ...payload, quantity: 1 }];
+        state.cartItems = [...state.cartItems, { ...payload, quantity: 1 , count_in_stock:payload.count_in_stock  }];
         state.quantity += 1;
       } else {
         state.cartItems = state.cartItems.map((item) => {
@@ -109,7 +107,7 @@ export const cartSlice = createSlice({
     addItemQuantity: (state, { payload }: PayloadAction<CartItemType>) => {
       state.cartItems = state.cartItems.map((item) => {
         if (item.id === payload.id) {
-          return { ...item, quantity: item.quantity + 1 };
+          return { ...item, quantity: item.quantity + 1, count_in_stock: item.count_in_stock &&  item.count_in_stock - 1 };
           
         } else {
           return item;
