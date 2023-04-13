@@ -5,9 +5,9 @@ const MY_SERVER = "http://127.0.0.1:8000/"
 
 export function login(cred: Icred) {
   // console.log(cred)
-  return new Promise<{ data: any }>((resolve) =>
-    axios.post(MY_SERVER + "login/",cred).then(res => resolve({ data: res.data }))
-  );
+  return new Promise<{ data: any }>((resolve,reject) =>
+    axios.post(MY_SERVER + "login/",cred).then(res => resolve({ data: res.data })).catch(error=>reject(error)));
+  ;
 }
 
 export function register(reg : Icred) {

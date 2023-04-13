@@ -72,9 +72,6 @@ export default function LoginPage() {
     };
     
 
-
-
-
     return (
         <div className="text-center m-5-auto">
             <h2>Sign in to us</h2>

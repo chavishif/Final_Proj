@@ -83,11 +83,23 @@
   margin-left: 10px;
   border: none;
   background: transparent;
-  color: #333;
+  color: black;
   font-size: 24px;
   cursor: pointer;
 }
 
 .wishlist-button:hover {
   color: #ff69b4;
+}
+
+
+.custom-button {
+  background-color: black;
+  color: white;
+  border: none;
+}
+
+.custom-button:hover {
+  background-color: white;
+  color: black;
 }

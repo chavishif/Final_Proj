@@ -68,6 +68,7 @@ export const loginSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+    
       .addCase(loginAsync.fulfilled, (state, action) => {
       state.logged = true
       // localStorage.setItem("logged", "true")
@@ -81,7 +82,13 @@ export const loginSlice = createSlice({
        state.username = jwt_decode<any>(state.access).username
        state.email = jwt_decode<any>(state.access).email
        localStorage.setItem("username",state.username)
+      
       })
+      .addCase(loginAsync.rejected, (state, action) => {
+    
+        alert('Incorrect username or password');
+         
+         })
       .addCase(registerAsync.fulfilled, (state, action) => {
        state.registered = true
         

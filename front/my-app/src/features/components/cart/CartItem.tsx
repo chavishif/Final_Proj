@@ -20,7 +20,6 @@ dispatch(removeFromCart(item));
 };
 
 const handleAddItemQuantity = (): void => {
-  console.log("item")
   if (item.quantity <= item.count_in_stock) {
     dispatch(addItemQuantity(item));
   }

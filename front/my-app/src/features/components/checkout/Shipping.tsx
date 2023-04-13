@@ -199,6 +199,8 @@ const Shipping = () => {
                                 <>
                                     <div className="form-group">
                                         <label style={{ fontSize: "22px" }} htmlFor="address">Address</label>
+                                        <br></br>
+                                        <br></br>
                                         <input
                                             required
                                             placeholder='Street Number, Floor'
@@ -208,8 +210,11 @@ const Shipping = () => {
                                             onChange={(event) => setAddress(event.target.value)}
                                         />
                                     </div>
+                                    
                                     <div className="form-group">
                                         <label style={{ fontSize: "22px" }} htmlFor="city">City</label>
+                                        <br></br>
+                                        <br></br>
                                         <input
                                             required
                                             placeholder='City'
@@ -222,6 +227,8 @@ const Shipping = () => {
                                     </div>
                                     <div className="form-group">
                                         <label style={{ fontSize: "22px" }} htmlFor="postalCode">Postal Code</label>
+                                        <br></br>
+                                        <br></br>
                                         <input
                                             required
                                             placeholder='Postal Code'
@@ -233,6 +240,8 @@ const Shipping = () => {
                                     </div>
                                     <div className="form-group">
                                         <label style={{ fontSize: "22px" }} htmlFor="country">Country</label>
+                                        <br></br>
+                                        <br></br>
                                         <input
                                             required
                                             placeholder='Country'
@@ -244,12 +253,15 @@ const Shipping = () => {
                                     </div>
                                     <div className="form-group">
                                         <label style={{ fontSize: "22px" }} htmlFor="phone">Phone number</label>
+                                        <br></br>
+                                        <br></br>
                                         <input
                                             required
                                             placeholder='Phone number'
                                             type="text"
                                             id="phone"
-                                            value={MyAddress.phone}
+                                            defaultValue={MyAddress.phone}
+
                                             onChange={(event) => setPhone(event.target.value)}
                                         />
                                     </div>

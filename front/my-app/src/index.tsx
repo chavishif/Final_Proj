@@ -22,6 +22,8 @@ import ShippingFooter from './features/components/general/ShippingFooter';
 import PayPal from './features/components/checkout/Paypal';
 import Profile from './features/Profile/Profile';
 import MyOrder from './features/Profile/MyOrder';
+import Return from './features/components/general/Return';
+import Privacy from './features/components/general/Privacy';
 
 
 const container = document.getElementById('root')!;
@@ -52,6 +54,10 @@ root.render(
             <Route path="/paypal" element={<PayPal />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/myorder/:id" element={<MyOrder />} />
+            <Route path="/returns" element={<Return />} />
+            <Route path="/privacy" element={<Privacy />} />
+
+            
             
           </Route>
 

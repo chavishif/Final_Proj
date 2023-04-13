@@ -1,0 +1,17 @@
+.return-container {
+    margin: 0 auto;
+    max-width: 800px;
+  }
+  
+  .return-heading {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .return-subheading {
+    text-align: center;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  

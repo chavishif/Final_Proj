@@ -10,7 +10,7 @@ const About = () => {
         padding: '2rem',
         fontSize: '1.2rem',
         lineHeight: '1.5',
-        backgroundColor: '#f8f8f8',
+        backgroundColor: 'white',
         color: '#333',
       };
     

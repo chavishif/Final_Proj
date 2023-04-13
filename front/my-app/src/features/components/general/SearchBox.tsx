@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate, useLocation } from 'react-router-dom';
+import "../../../styles/details.css"
 
 type Category = {
   name: string;
@@ -30,6 +31,8 @@ function SearchBox({ collapseItems }: Props) {
       }
     }
   };
+ 
+  
 
   useEffect(() => {
     const category = collapseItems.find(
@@ -51,8 +54,8 @@ function SearchBox({ collapseItems }: Props) {
         onChange={(e) => setKeyword(e.target.value)}
         className="mr-sm-2 ml-sm-5"
       />
-      <Button type="submit" variant="outline-success"  className="p-2 border-0">
-        Submit
+      <Button type="submit" variant="outline-success"  className="custom-button">
+        Search
       </Button>
     </div>
   </Form>

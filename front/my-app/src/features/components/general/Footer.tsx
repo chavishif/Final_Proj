@@ -59,7 +59,6 @@ function Footer() {
                 <a href="/returns" style={linkStyle}>Returns & Exchanges</a>
                 <a href="/shippingdel" style={linkStyle}>Shipping & Delivery</a>
                 <a href="/privacy" style={linkStyle}>Privacy Policy</a>
-                <a href="/terms" style={linkStyle}>Terms & Conditions</a>
             </div>
             <div style={{
                 width: "25%",

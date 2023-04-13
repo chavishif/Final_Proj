@@ -90,3 +90,36 @@
   background-color: #333;
   color: #f0f0f0;
 }
+
+
+
+/* .subcategories-container button {
+  font-weight: normal;
+} */
+.subcategories-container button {
+  border: none;
+  background-color: white;
+  color: #333;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+}
+
+
+.subcategories-container button.selected {
+  font-weight: bold;
+}
+
+.subcategories-container button,
+.subcategories-container a {
+  border: none;
+  background-color: white;
+  color: #333;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+}
+
+.subcategories-container button.selected,
+.subcategories-container a.selected {
+  font-weight: bold;
+}

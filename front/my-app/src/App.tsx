@@ -43,7 +43,6 @@ export default function App(): JSX.Element {
 
   const collapseItems = [
     { name: "Sofas", path: "/category/Sofas" },
-    { name: "Shelves", path: "/category/Shelves" },
     { name: "Closets", path: "/category/Closets" },
     { name: "Chairs", path: "/category/Chairs" },
     { name: "Tables", path: "/category/Tables" },
@@ -147,7 +146,6 @@ export default function App(): JSX.Element {
             {wishlistQuantity !== 0 && <span>{wishlistQuantity}</span>}
           </button>
 
-          {/* add remember */}
           {logged || remember === "true" ? (
             <>
 
@@ -190,4 +188,3 @@ export default function App(): JSX.Element {
 
   )
 }
-

@@ -11,7 +11,6 @@ import Rating from './Rating';
 
 const Products = () => {
   const { name } = useParams<{ name: string }>();
-  console.log(name)
   const products = useAppSelector(selectProducts);
   const dispatch = useAppDispatch();
   const [selectedCategory, setSelectedCategory] = useState<any>(name);
@@ -21,14 +20,14 @@ const Products = () => {
 
 
   const filteredProducts = selectedSubcat
-    ? products.filter((product) => product.category === selectedCategory && product.subcategory === selectedSubcat)
-    : products.filter((product) => product.category === selectedCategory);
+    ? products.filter((product) => product.category === name && product.subcategory === selectedSubcat)
+    : products.filter((product) => product.category === name);
 
   const subcategories = [...new Set(filteredProducts.map((product) => product.subcategory))];
 
 
   const filteredSubcats = selectedCategory
-    ? [...new Set(products.filter((product) => product.category === selectedCategory).map((product) => product.subcategory))]
+    ? [...new Set(products.filter((product) => product.category === name).map((product) => product.subcategory))]
     : [...new Set(products.map((product) => product.subcategory))];
 
   const handleSubcatClick = (category: string, subcat: string) => {
@@ -37,18 +36,23 @@ const Products = () => {
   };
 
   const handleAddToCart = (product: any) => {
+    if (1 <= product.count_in_stock) {
     dispatch(addProdQuantity({
       id: product.id,
       image: `http://127.0.0.1:8000${product.proimage}`,
       name: product.name,
       price: product.price,
       quantity: 1,
-      count_in_stock : product.count_in_stock
+      count_in_stock: product.count_in_stock
+
     }));
+  }
+    else {
+      alert(`${product.count_in_stock} in stock`);
+    }
   };
 
   useEffect(() => {
-    console.log('Fetching products with name:', name);
     dispatch(getproductsAsync());
   }, [selectedCategory]);
 
@@ -68,10 +72,11 @@ const Products = () => {
             <span key={subcat}>
               {' '}
               <button
-
-                onClick={() => handleSubcatClick(selectedCategory || "", subcat)}             
+                className={subcat === selectedSubcat ? "selected" : ""}
+                onClick={() => handleSubcatClick(selectedCategory || "", subcat)}
               >
-                <br></br>
+
+                {/* <br></br> */}
                 {subcat}
               </button>
               |
@@ -79,10 +84,15 @@ const Products = () => {
 
           ))}
           <span>
-            <Link to="#" onClick={() => setSelectedSubcat(null)}>
+            <Link
+              to="#"
+              className={selectedSubcat === null ? "selected" : ""}
+              onClick={() => setSelectedSubcat(null)}
+            >
               All
             </Link>
           </span>
+
         </div>
       </div>
       <div>
@@ -92,6 +102,7 @@ const Products = () => {
 
 
             <h2>{product.name}</h2>
+           
 
 
             <Link to={`/product/${product.id}`}>
@@ -104,11 +115,11 @@ const Products = () => {
             <Card.Text as="div">
               <div className="my-3">
                 <Rating value={product.rating} text={`${product.numReviews} reviews`} color={'#f8e825'} />
-              price:  ${product.price}
+                price:  ${product.price}
 
               </div>
             </Card.Text>
-       
+
             <div className="product">
               <div className='buttons'>
                 <button className="btn btn-primary" type="button"
