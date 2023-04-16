@@ -20,11 +20,11 @@ dispatch(removeFromCart(item));
 };
 
 const handleAddItemQuantity = (): void => {
-  if (item.quantity <= item.count_in_stock) {
+  if ( item.count_in_stock >= 2) {
     dispatch(addItemQuantity(item));
   }
   else {
-    alert(`${item.count_in_stock} in stock`);
+    alert(`no items in stock`);
   }
 };
 

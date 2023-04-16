@@ -77,7 +77,7 @@ export default function App(): JSX.Element {
 
         <Navbar.Brand>
           <Navbar.Toggle aria-label="toggle navigation" />
-          <RouterLink to="/home" style={{ textDecoration: 'none', color: "black" }}>
+          <RouterLink to="/" style={{ textDecoration: 'none', color: "black" }}>
             <div style={{ display: "flex", alignItems: "center" }}>
               <img src={logo} alt="Logo" style={{ height: "50px", marginRight: "10px" }} />
               <Text b color="inherit" hideIn="xs">
@@ -107,25 +107,7 @@ export default function App(): JSX.Element {
             }}
           >
             <SearchBox collapseItems={collapseItems} />
-            {/* <Input
-            clearable
-            contentLeft={
-              <SearchIcon fill="var(--nextui-colors-accents6)" size={16} />
-            }
-            contentLeftStyling={false}
-            css={{
-              w: "100%",
-              "@xsMax": {
-                mw: "300px",
-              },
-              "& .nextui-input-content--left": {
-                h: "100%",
-                ml: "$4",
-                dflex: "center",
-              },
-            }}
-            placeholder="Search..." */}
-            {/* /> */}
+          
           </Navbar.Item>
           <button className="btn btn-outline-dark" type="button"
             data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
@@ -133,10 +115,7 @@ export default function App(): JSX.Element {
             <ShoppingCart size={18} />
             {quantity !== 0 && <span>{quantity}</span>}
           </button>
-          {/* <RouterLink to="/cart" >
-            <ShoppingCart size={18} />
-            {quantity !== 0 && <span>{quantity}</span>}
-          </RouterLink> */}
+      
           <button className="btn btn-outline-dark"
             type="button" data-bs-toggle="offcanvas"
             data-bs-target="#offcanvas2"
@@ -170,9 +149,7 @@ export default function App(): JSX.Element {
               <RouterLink
                 style={{ textDecoration: "none", color: "black" }}
                 color="inherit"
-                // css={{
-                //   minWidth: "100%",
-                // }}
+             
                 to={item.path}
               >
                 {item.name}

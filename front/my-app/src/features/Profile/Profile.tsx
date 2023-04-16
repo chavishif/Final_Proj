@@ -18,11 +18,7 @@ import "../../../src/styles/cart.css";
 function Profile() {
 
    
-    const [address, setAddress] = useState("");
-    const [city, setCity] = useState("");
-    const [postalCode, setPostalCode] = useState("");
-    const [country, setCountry] = useState("");
-    const [phone, setPhone] = useState("");
+   
     const [confirmPassword, setConfirmPassword] = useState('')
     const [message, setMessage] = useState('')
     const navigate = useNavigate()
@@ -30,126 +26,21 @@ function Profile() {
     const myOrders = useAppSelector(selectMYOrders);
     const access = useState(localStorage.getItem("access")||"");
     
-    // const userDetails = useSelector(state => state.userDetails)
-    // const { error, loading, user } = userDetails
+   
 
-    // const userLogin = useSelector(state => state.userLogin)
-    // const { userInfo } = userLogin
-
-    // const userUpdateProfile = useSelector(state => state.userUpdateProfile)
-    // const { success } = userUpdateProfile
-
-    // const orderListMy = useSelector(state => state.orderListMy)
-    // const { loading: loadingOrders, error: errorOrders, orders } = orderListMy
-
-
-    // useEffect(() => {
-    //     if (!userInfo) {
-    //         navigate('/login')
-    //     } else {
-    //         if (!user || !user.name || success || userInfo._id !== user._id) {
-    //             // dispatch({ type: USER_UPDATE_PROFILE_RESET })
-    //             // dispatch(getUserDetails('profile'))
-    //             // dispatch(listMyOrders())
-    //         } else {
-    //             setName(user.name)
-    //             setEmail(user.email)
-    //         }
-    //     }
-    // }, [dispatch, history, userInfo, user, success])
-
-    const submitHandler = (e: any) => {
-        e.preventDefault()
-
-     
-            console.log("first")
-            // dispatch(updateUserProfile({
-            //     'id': user._id,
-            //     'name': name,
-            //     'email': email,
-            //     'password': password
-        
-        setMessage('')
-    }
+  
     useEffect(() => {
        dispatch(getMyOrdersAsync(access[0]))
     }, [])
 
 return (
     <div>
-    <Row>
-        <Col md={3}>
-            <h2>User Profile</h2>
 
-            {/* {message && <Message variant='danger'>{message}</Message>}
-            {error && <Message variant='danger'>{error}</Message>}
-            {loading && <Loader />} */}
+        
 
-
-            <Form onSubmit={submitHandler}>
-
-                <Form.Group controlId='address'>
-                    <Form.Label>Address</Form.Label>
-                    <Form.Control
-                        required
-                        type='address'
-                        placeholder='Enter address'
-                        value={address}
-                        onChange={(e) => setAddress(e.target.value)}
-                    >
-                    </Form.Control>
-                </Form.Group>
-
-                <Form.Group controlId='city'>
-                    <Form.Label> City </Form.Label>
-                    <Form.Control
-                        required
-                        type='city'
-                        placeholder='Enter city'
-                        value={city}
-                        onChange={(e) => setCity(e.target.value)}
-                    >
-                    </Form.Control>
-                </Form.Group>
-
-                <Form.Group controlId='postalCode'>
-                    <Form.Label>PostalCode</Form.Label>
-                    <Form.Control
-
-                        type='postalCode'
-                        placeholder='Enter postalCode'
-                        value={postalCode}
-                        onChange={(e) => setPostalCode(e.target.value)}
-                    >
-                    </Form.Control>
-                </Form.Group>
-
-                <Form.Group controlId='phone'>
-                    <Form.Label>Phone Number</Form.Label>
-                    <Form.Control
-
-                        type='phone'
-                        placeholder='Enter phone'
-                        value={confirmPassword}
-                        onChange={(e) => setPhone(e.target.value)}
-                    >
-                    </Form.Control>
-                </Form.Group>
-
-                <Button type='submit' variant='primary'>
-                    Update
-                </Button>
-
-            </Form>
-        </Col>
-
-        <Col md={9}>
+        <Col md={14}>
             <h2>My Orders</h2>
-            {/* {loadingOrders ? (
-                <Loader />
-            ) : errorOrders ? (
-                <Message variant='danger'>{errorOrders}</Message>
-            ) : ( */}
+         
                 <Table striped responsive className='table-sm'>
                     <thead>
                         <tr>
@@ -181,7 +72,7 @@ return (
             
         </Col>
         
-    </Row>
+
     </div>
 );
 }

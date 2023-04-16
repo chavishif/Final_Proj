@@ -12,6 +12,7 @@ import { addToCart } from '../../../services/cartSlice';
 import { Card, Col, ListGroup, Row } from 'react-bootstrap';
 import Message from '../../Profile/Message';
 import Rating from './Rating';
+import CartItemType from '../../../models/cartItem';
 
 const ProductDetails = () => {
   const { id } = useParams<{ id: any }>();
@@ -38,7 +39,10 @@ const ProductDetails = () => {
   }
 
   const handleAddToCart = (product: any) => {
-    if (quantity <= product.count_in_stock) {
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const cartItem = cart.cartItems.find((item: { id: any; }) => item.id === product.id);
+
+    if ((cartItem? cartItem.count_in_stock >= 2: product.count_in_stock > 0) && (product.count_in_stock > 0)) {
       dispatch(
         addToCart({
           id: product.id,
@@ -46,28 +50,44 @@ const ProductDetails = () => {
           name: product.name,
           price: product.price,
           quantity,
-          count_in_stock:product.count_in_stock
+          count_in_stock: product.count_in_stock
         })
       );
     } else {
-      alert(`${product.count_in_stock} in stock`);
+      alert(`no items in stock`);
     }
   };
   
+
 
   return (
     <div className="details">
       {product ? (
         <>
           <div className="image">
-            <br></br>
+           
             <img src={`http://127.0.0.1:8000${product.proimage}`} height={400} width={500} alt={product.name} />
             <Link to={`/category/${product.category}`}>
+       
+
               <button className="button-33" role="button">
                 <AiOutlineArrowLeft /> Back
               </button>
             </Link>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+
           </div>
+        
+
           <div className="info">
             <h2>{product.name}</h2>
             <p>{product.desc}</p>
@@ -83,12 +103,12 @@ const ProductDetails = () => {
             <br></br>
 
             {/* low in stock */}
-            <div className="info"
-              style={{ backgroundColor: product.count_in_stock < 5 ? "yellow" : "inherit", fontWeight: "bold" }}>
-              {product.count_in_stock < 5 && product.count_in_stock > 0 ? <span> Low in stock </span>:""}
+            <div 
+              style={{ color: product.count_in_stock < 5 ? "red" : "inherit", fontWeight: "bold" }}>
+              {product.count_in_stock < 5 && product.count_in_stock > 0 ? <span> Low in stock </span> : ""}
               {product.count_in_stock <= 0 && <span>Out of stock</span>}
             </div>
-
+            <br></br>
 
 
 
@@ -116,26 +136,18 @@ const ProductDetails = () => {
             </button>
             <br></br>
             <br></br>
+            <h4>Reviews</h4>
+            {product.reviews && product.reviews.length === 0 && <Message variant='info'>No Reviews</Message>}
+
+            {product.reviews && product.reviews.map((review) => (
+              <ListGroup.Item key={review._id}>
+                <strong>{review.name}</strong>
+                <Rating value={review.rating} color='#f8e825' />
+                <p>{review.createdAt.substring(0, 10)}</p>
+                <p>{review.comment}</p>
+              </ListGroup.Item>
+            ))}
           </div>
-          <div>
-            <Row>
-
-              <Col md={6}>
-                <h4>Reviews</h4>
-                {product.reviews && product.reviews.length === 0 && <Message variant='info'>No Reviews</Message>}
-
-                {product.reviews && product.reviews.map((review) => (
-                  <ListGroup.Item key={review._id}>
-                    <strong>{review.name}</strong>
-                    <Rating value={review.rating} color='#f8e825' />
-                    <p>{review.createdAt.substring(0, 10)}</p>
-                    <p>{review.comment}</p>
-                  </ListGroup.Item>
-                ))}
-              </Col>
-            </Row>
-          </div>
-
 
         </>
       ) : (

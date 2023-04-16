@@ -50,7 +50,7 @@ root.render(
             <Route path="/shipping" element={<Shipping />}/>
             <Route path="/shippingdel" element={<ShippingFooter />}/>
             <Route path="/about" element={<About />} />
-            <Route path="/home" element={<HomePage />} />
+            <Route path="/" element={<HomePage />} />
             <Route path="/paypal" element={<PayPal />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/myorder/:id" element={<MyOrder />} />

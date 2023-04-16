@@ -45,7 +45,7 @@ function Footer() {
                 margin: "10px 0",
             }}>
                 <h3></h3>
-                <a href="/home" style={linkStyle}>Home</a>
+                <a href="/" style={linkStyle}>Home</a>
                 <a href="/about" style={linkStyle}>About Us</a>
                 <a href="/contact" style={linkStyle}>Contact Us</a>
             </div>

@@ -14,7 +14,10 @@ const Contact: React.FC = () => {
   return (
     <div> <center>
       <div className="form">
-     
+      <div className="white-side">
+  <img src="https://thumbs.dreamstime.com/b/black-contact-us-icon-logo-white-131912496.jpg"  alt="Description of image" width={500} height={400}/>
+</div>
+
         <div className="contact-info">
           <h2 className="title">Contact Information</h2>
           <p className="text">
@@ -36,6 +39,7 @@ const Contact: React.FC = () => {
           <div className="social-media">
             <h2 className="title">Follow Us</h2>
             <p>Connect with us on social media for updates and news.</p>
+            
             </div>
 
 
@@ -43,7 +47,9 @@ const Contact: React.FC = () => {
 
 </div>
 </div>
+
 </center>
+
 </div>
     
   )

@@ -8,6 +8,7 @@ import { getproductsAsync, selectProducts } from '../../../services/productsSlic
 import { addProdQuantity } from '../../../services/cartSlice';
 import { Card } from 'react-bootstrap';
 import Rating from './Rating';
+import { RootState } from '../../../app/store';
 
 const Products = () => {
   const { name } = useParams<{ name: string }>();
@@ -15,6 +16,7 @@ const Products = () => {
   const dispatch = useAppDispatch();
   const [selectedCategory, setSelectedCategory] = useState<any>(name);
   const [selectedSubcat, setSelectedSubcat] = useState<string | null>(null);
+  const { cartItems, totalAmount, quantity } = useAppSelector((state: RootState) => state.cart);
 
 
 
@@ -36,7 +38,10 @@ const Products = () => {
   };
 
   const handleAddToCart = (product: any) => {
-    if (1 <= product.count_in_stock) {
+   const productCart = cartItems.filter((item)=> item.id === product.id)[0]
+   console.log(productCart? "ds" :"ddd")
+
+    if (productCart? productCart.quantity: 0 <= product.count_in_stock) {
     dispatch(addProdQuantity({
       id: product.id,
       image: `http://127.0.0.1:8000${product.proimage}`,

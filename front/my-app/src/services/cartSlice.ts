@@ -7,16 +7,16 @@ export interface CartState {
   quantity: number;
   cartItems: CartItemType[];
   totalAmount: number;
-  wishlistquantity?:number
+  wishlistquantity?: number
 
 }
 
- export const initialState: CartState  = {
-   quantity: 0,
-   cartItems: [],
-   totalAmount: 0,
-   wishlistquantity: 0
- };
+export const initialState: CartState = {
+  quantity: 0,
+  cartItems: [],
+  totalAmount: 0,
+  wishlistquantity: 0
+};
 
 // Function to retrieve cart data from local storage
 const loadState = (): CartState | undefined => {
@@ -40,9 +40,9 @@ const saveState = (state: CartState) => {
     // Ignore write errors
   }
 }
-const updateCartInLocalStorage = (cartItems: CartItemType[], 
-  totalAmount: number, quantity:number) => {
-  const cartState = { cartItems, totalAmount ,quantity  };
+const updateCartInLocalStorage = (cartItems: CartItemType[],
+  totalAmount: number, quantity: number) => {
+  const cartState = { cartItems, totalAmount, quantity };
   saveState(cartState);
 };
 
@@ -51,12 +51,14 @@ export const cartSlice = createSlice({
   name: "cart",
   initialState: loadState() || initialState, // initialize state from local storage if available
   reducers: {
-    
+
     addToCart: (state, { payload }: PayloadAction<CartItemType>) => {
+      console.log(payload)
+
       const isItemExist = state.cartItems.find((item) => item.id === payload.id);
       if (!isItemExist) {
         if (payload.quantity > 1) {
-          payload.count_in_stock =  payload.count_in_stock && payload.count_in_stock - payload.quantity;
+          payload.count_in_stock = payload.count_in_stock && payload.count_in_stock - payload.quantity;
         }
         state.cartItems = [...state.cartItems, { ...payload }];
         state.quantity += payload.quantity;
@@ -74,8 +76,8 @@ export const cartSlice = createSlice({
       state.quantity = state.cartItems.reduce((total, item) => total + item.quantity, 0);
       updateCartInLocalStorage(state.cartItems, state.totalAmount, state.quantity);
     },
-    
-   
+
+
     removeFromCart: (state, { payload }: PayloadAction<CartItemType>) => {
       state.cartItems = state.cartItems.filter(
         (item) => item.id !== payload.id
@@ -85,30 +87,30 @@ export const cartSlice = createSlice({
 
       saveState(state);
     },
+    // מתודה שמגיעה מהדף של המוצרים
     addProdQuantity: (state, { payload }: PayloadAction<CartItemType>) => {
+      console.log(payload)
       const isItemExist = state.cartItems.find((item) => item.id === payload.id);
       if (!isItemExist) {
-        state.cartItems = [...state.cartItems, { ...payload, quantity: 1 , count_in_stock:payload.count_in_stock  }];
+        state.cartItems = [...state.cartItems, { ...payload, quantity: 1, count_in_stock: payload.count_in_stock && payload.count_in_stock - payload.quantity }];
         state.quantity += 1;
       } else {
-        state.cartItems = state.cartItems.map((item) => {
-          if (item.id === payload.id) {
-            return { ...item, quantity: item.quantity + 1 };
-          } else {
-            return item;
-          }
-        });
-        state.quantity += 1;
+        addItemQuantity(payload)
       }
+
+      state.quantity += 1;
+
       state.totalAmount += Number(payload.price);
       saveState(state);
-    
+
     },
     addItemQuantity: (state, { payload }: PayloadAction<CartItemType>) => {
+      console.log("d")
+      console.log(payload)
       state.cartItems = state.cartItems.map((item) => {
         if (item.id === payload.id) {
-          return { ...item, quantity: item.quantity + 1, count_in_stock: item.count_in_stock &&  item.count_in_stock - 1 };
-          
+          return { ...item, quantity: item.quantity + 1, count_in_stock: item.count_in_stock && item.count_in_stock - 1 };
+
         } else {
           return item;
         }
@@ -134,13 +136,13 @@ export const cartSlice = createSlice({
       saveState(state);
     },
 
-     clearCart: (state )=> {
+    clearCart: (state) => {
       console.log("first")
       state.cartItems = [];
       state.totalAmount = 0;
       state.quantity = 0;
       saveState(state);
-      
+
     },
 
 

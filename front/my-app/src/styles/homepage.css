@@ -1,0 +1,9 @@
+
+
+.product-categories__img-wrap {
+    position: relative;
+    min-height: 165px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

@@ -85,7 +85,7 @@ const MyOrder = () => {
                           {MyOrder.map((order: any, index: any) => (
                             <div key={index}>
                               {/* //////////////////////////////////////////////// */}
-                              {order ? (
+                              {order.isDelivered ? (
                                 <div>
                                   <Review product={item.product} />
                                 </div>

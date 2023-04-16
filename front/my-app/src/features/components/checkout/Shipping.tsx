@@ -167,7 +167,7 @@ const Shipping = () => {
                                                     <br></br>
                                                     <br></br>
                                                     <br></br>
-                                                    <Link to={`/product/${item.id}`}>
+                                                    <Link to={`/product/${item.id}`}  style={{ textDecoration: 'none', color: "black" }}>
                                                         {item.name}</Link>
 
                                                 </Col>

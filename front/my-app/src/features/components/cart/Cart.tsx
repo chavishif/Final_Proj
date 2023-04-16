@@ -42,26 +42,30 @@ const Cart = () => {
             ))}
             <div className="d-flex justify-content-between mt-3">
               <h5>Just: ${totalAmount ? totalAmount.toFixed(2) : '0.00'}</h5>
+         </div>
+         <div>
               <button
-                className="btn btn-danger mt-3"
+               className="button-73" role="button" 
+               style={{boxShadow: " #ff0000 0 -12px 6px inset"}}
                 onClick={() => dispatch(clearCart())}
               >
                 Clear Cart
               </button>
 
               { logged? ( // <-- use isLoggedIn here
-                <button type="button" className="btn btn-danger mt-3" data-bs-dismiss="offcanvas"
-                  aria-label="Close">
-                  <Link to="/shipping">
+              
+                <button className="button-73" role="button">
+               
+                  <Link to="/shipping"  style={{ textDecoration: 'none', color: "black" }}>
                     Checkout
                   </Link>
                 </button>
 
               ) : (
-                <button type="button" className="btn btn-danger mt-3" 
+                <button  className="button-73" role="button" 
                 data-bs-dismiss="offcanvas"
                   aria-label="Close">
-                  <Link to="/auth" onClick={handleCheckout}> {/* <-- add onClick to set isLoggedIn to true */}
+                  <Link to="/auth"  style={{ textDecoration: 'none', color: "black" }} onClick={handleCheckout}> {/* <-- add onClick to set isLoggedIn to true */}
                     Checkout
                   </Link>
                 </button>

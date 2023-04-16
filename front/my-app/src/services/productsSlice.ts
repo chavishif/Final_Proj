@@ -21,13 +21,6 @@ export const getproductsAsync = createAsyncThunk(
   }
 );
 
-// export const refreshAsync = createAsyncThunk(
-//   'products/refresh',
-//   async (token:string ) => {
-//     const response = await refresh(token);
-//     return response.data;
-//   }
-// );
 
 export const productsSlice = createSlice({
   name: 'products',
@@ -41,25 +34,10 @@ export const productsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getproductsAsync.fulfilled, (state, action) => {
-       console.log( action.payload)
        state.products = action.payload
       
       })
-      // .addCase(registerAsync.fulfilled, (state, action) => {
-      //  state.registered = true
-        
-      //   })
-      //   .addCase(refreshAsync.fulfilled, (state, action) => {
-      //     console.log(action.payload.access)
-      //     state.access = action.payload.access
-      //     state.refresh = action.payload.refresh
-      //     // console.log( jwt_decode(action.payload.refresh))
-      //     // console.log( jwt_decode(state.access))
-      //     localStorage.setItem("access",state.access)
-      //     localStorage.setItem("refresh", state.refresh)
-      //     state.username=jwt_decode<any>(state.access).username
-      //     state.logged =true
-      //   })
+
   },
 });
 
